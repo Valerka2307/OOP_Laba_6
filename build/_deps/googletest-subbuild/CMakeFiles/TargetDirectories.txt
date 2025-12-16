@@ -1,0 +1,3 @@
+C:/Users/ValCombucha/CPP_Programming/oop_laba_6/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate.dir
+C:/Users/ValCombucha/CPP_Programming/oop_laba_6/build/_deps/googletest-subbuild/CMakeFiles/ALL_BUILD.dir
+C:/Users/ValCombucha/CPP_Programming/oop_laba_6/build/_deps/googletest-subbuild/CMakeFiles/ZERO_CHECK.dir

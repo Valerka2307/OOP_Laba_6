@@ -1,0 +1,5 @@
+2
+1
+Robber A 1 2
+1
+Robber S 2 3

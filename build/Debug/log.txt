@@ -1,0 +1,4 @@
+Elf "S" (at 3,3) vs Robber "A" (at 2,3) - Victory
+Elf "S" (at 3,3) vs Robber "A" (at 2,3) - Victory
+Robber "A" (at 2,3) vs Elf "S" (at 3,3) - Defeat
+Robber "A" (at 2,3) vs Elf "S" (at 3,3) - Defeat

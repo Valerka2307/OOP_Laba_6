@@ -1,0 +1,4 @@
+Robber 1 2 A
+Elf 2 3 S
+Bear 3 4 D
+Robber 2 1 F
