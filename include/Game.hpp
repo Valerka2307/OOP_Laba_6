@@ -13,11 +13,13 @@ class Game {
 private:
     std::vector<std::shared_ptr<NPC>> npcs;
     Factory factory;
-    std::shared_ptr<ObserverLog> log_observer;
-    std::shared_ptr<ObserverOut> console_observer;
+    std::vector<std::shared_ptr<Observer>> observers;
     
 public:
     Game();
+    
+    // Dependency injection - add observers from outside
+    void addObserver(std::shared_ptr<Observer> observer);
     
     void addNPC(NPCType type, int x, int y, const std::string& name);
     void printAllNPCs() const;

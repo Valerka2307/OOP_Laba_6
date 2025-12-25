@@ -10,6 +10,10 @@ void Bear::print() {
     std::cout << "Bear \"" << name << "\": " << *this;
 }
 
+std::string Bear::getTypeName() const {
+    return "Bear";
+}
+
 void Bear::save(std::ostream &os) {
     NPC::save(os);
 }

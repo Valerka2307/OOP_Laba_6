@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include "Game.hpp"
+#include "Observer.hpp"
 
 class DungeonEditor {
 private:

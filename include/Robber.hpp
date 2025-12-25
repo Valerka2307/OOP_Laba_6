@@ -7,6 +7,7 @@ class Robber : public NPC {
     Robber(std::istream &is);
 
     void print() override;
+    std::string getTypeName() const override;
 
     bool is_robber() const override;
 

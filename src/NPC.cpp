@@ -29,13 +29,9 @@ bool NPC::is_elf() const { return false; }
 bool NPC::is_bear() const { return false; }
 
 void NPC::save(std::ostream &os) {
-    std::string type_str;
-    if (type == RobberType) { type_str = "Robber"; }
-    else if (type == ElfType) { type_str = "Elf"; }
-    else if (type == BearType) { type_str = "Bear"; }
-    else { type_str = "Unknown"; }
-    
-    os << type_str << " " << x << " " << y << " " << name << std::endl;
+    // Save as numeric type for Factory::loadNPC() compatibility
+    os << static_cast<int>(type) << " " << x << " " << y << std::endl;
+    os << name << std::endl;
 }
 
 std::string NPC::getName() const {

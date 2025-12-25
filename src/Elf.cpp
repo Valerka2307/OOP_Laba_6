@@ -10,6 +10,10 @@ void Elf::print() {
     std::cout << "Elf \"" << name << "\": " << *this;
 }
 
+std::string Elf::getTypeName() const {
+    return "Elf";
+}
+
 void Elf::save(std::ostream &os) {
     NPC::save(os);
 }

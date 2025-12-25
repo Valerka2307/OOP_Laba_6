@@ -7,6 +7,7 @@ class Bear : public NPC {
     Bear(std::istream &is);
 
     void print() override;
+    std::string getTypeName() const override;
 
     bool is_bear() const override;
 

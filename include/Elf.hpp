@@ -7,6 +7,7 @@ class Elf : public NPC {
     Elf(std::istream &is);
 
     void print() override;
+    std::string getTypeName() const override;
 
     bool is_elf() const override;
 

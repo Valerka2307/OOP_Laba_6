@@ -9,8 +9,12 @@
 #include <filesystem>
 
 Game::Game() {
-    log_observer = std::make_shared<ObserverLog>();
-    console_observer = std::make_shared<ObserverOut>();
+}
+
+void Game::addObserver(std::shared_ptr<Observer> observer) {
+    if (observer) {
+        observers.push_back(observer);
+    }
 }
 
 bool Game::isValidPosition(int x, int y) const {
@@ -26,8 +30,10 @@ void Game::addNPC(NPCType type, int x, int y, const std::string& name) {
     auto npc = factory.createNPC(type, x, y);
     if (npc) {
         npc->setName(name);
-        npc->subscribe(log_observer);
-        npc->subscribe(console_observer);
+        // Subscribe all observers
+        for (const auto& observer : observers) {
+            npc->subscribe(observer);
+        }
         npcs.push_back(npc);
         std::cout << "NPC \"" << name << "\" added successfully." << std::endl;
     }
@@ -41,12 +47,7 @@ void Game::printAllNPCs() const {
     
     std::cout << "\n=== Current NPCs ===" << std::endl;
     for (const auto& npc : npcs) {
-        std::string type_name;
-        if (npc->is_robber()) type_name = "Robber";
-        else if (npc->is_elf()) type_name = "Elf";
-        else if (npc->is_bear()) type_name = "Bear";
-        
-        std::cout << type_name << " \"" << npc->getName() << "\": (" 
+        std::cout << npc->getTypeName() << " \"" << npc->getName() << "\": (" 
                   << npc->getX() << ", " << npc->getY() << ")" << std::endl;
     }
     std::cout << "==================\n" << std::endl;
@@ -86,28 +87,21 @@ void Game::loadFromFile(const std::string& filename) {
 
     npcs.clear();
 
-    std::string type_str;
-    int x, y;
-    std::string name;
-
-    while (file >> type_str >> x >> y) {
-        file.ignore();
-        std::getline(file, name);
-
-        NPCType type = Unknown;
-        if (type_str == "Robber") type = RobberType;
-        else if (type_str == "Elf") type = ElfType;
-        else if (type_str == "Bear") type = BearType;
-
-        if (type != Unknown) {
-            auto npc = factory.createNPC(type, x, y);
-            npc->setName(name);
-            npc->subscribe(log_observer);
-            npc->subscribe(console_observer);
+    while (file.peek() != EOF) {
+        auto npc = factory.loadNPC(file);
+        
+        if (npc) {
+            // Subscribe all observers
+            for (const auto& observer : observers) {
+                npc->subscribe(observer);
+            }
             npcs.push_back(npc);
+        } else {
+            break; // Stop on error
         }
     }
 
+    file.close();
     std::cout << "Loaded " << npcs.size() << " NPCs from " << filepath << std::endl;
 }
 
@@ -139,18 +133,21 @@ void Game::startBattle(size_t distance) {
                     battles_occurred = true;
                     
                     // Выполняем бой: i-ый NPC атакует j-го
-                    BattleResult res_attacker = npcs[i]->accept_fight(npcs[j]);
-                    BattleResult res_defender = npcs[j]->accept_fight(npcs[i]);
+                    // accept_fight() возвращает результат для защитника
+                    BattleResult result_for_j = npcs[i]->accept_fight(npcs[j]);
                     
-                    if (res_attacker == Victory) {
-                        alive[j] = false;  // j-й NPC побежден
-                    } else if (res_attacker == Defeat) {
-                        alive[i] = false;  // i-й NPC побежден
-                    } else if (res_attacker == MutualDestruction) {
-                        alive[i] = false;  // оба погибают
+                    if (result_for_j == Victory) {
+                        // j победил, i мертв
+                        alive[i] = false;
+                    } else if (result_for_j == Defeat) {
+                        // j проиграл, j мертв
+                        alive[j] = false;
+                    } else if (result_for_j == MutualDestruction) {
+                        // оба погибают
+                        alive[i] = false;
                         alive[j] = false;
                     }
-                    // BattleResult::PeaceAndLove - оба остаются живы
+                    // Если PeaceAndLove, оба остаются живы
                 }
             }
         }

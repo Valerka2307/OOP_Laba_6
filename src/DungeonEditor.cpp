@@ -2,6 +2,10 @@
 
 DungeonEditor::DungeonEditor() {
     std::cout << "Welcome to Balagur Fate 3 Dungeon Editor!" << std::endl;
+    
+    // Dependency Injection - add observers to game
+    game.addObserver(ObserverLog::get());
+    game.addObserver(ObserverOut::get());
 }
 
 void DungeonEditor::displayMenu() const {

@@ -45,6 +45,7 @@ protected:
     int getX() const { return x; }
     int getY() const { return y; }
     NPCType getType() const { return type; }
+    virtual std::string getTypeName() const = 0;
 
     virtual BattleResult accept_fight(std::shared_ptr<NPC>) = 0;
 

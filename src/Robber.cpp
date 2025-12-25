@@ -10,6 +10,10 @@ void Robber::print() {
     std::cout << "Robber \"" << name << "\": " << *this;
 }
 
+std::string Robber::getTypeName() const {
+    return "Robber";
+}
+
 void Robber::save(std::ostream &os) {
     NPC::save(os);
 }
